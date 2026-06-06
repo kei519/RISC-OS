@@ -1,0 +1,24 @@
+1d8: 100013b5 // runtime_init
+1dc: 1000028d // main
+1e0: 100013ad // exit
+
+r4 = 10001798
+r5 = 100017d8
+
+# called in runtime_run_initializer
+10001198: runtime_init_bootrom_reset
+1000110c: runtime_init_early_resets
+10001140: runtime_init_usb_power_down
+10001294: runtime_init_clocks
+10001178: runtime_init_post_clock_resets
+10001090: runtime_init_boot_locks_reset
+100011c0: runtime_init_spin_locks_reset
+1000107c: runtime_init_bootrom_locking_enable
+10000534: runtime_init_mutex
+100011c4: runtime_init_install_ram_vector_table
+100008c8: runtime_init_default_alarm_pool
+100010dc: frist_per_core_initializer
+100011ac: runtime_init_per_core_bootrom_reset
+1000115c: runtime_init_per_core_enable_coprocessors
+10000434: spinlock_set_extexclall
+1000045c: runtime_init_per_core_irq_priorities
