@@ -1,25 +1,23 @@
 #![no_std]
 #![no_main]
 
-use core::panic::PanicInfo;
+use core::{panic::PanicInfo, slice};
 
-#[unsafe(link_section = ".vectors")]
-#[used]
-static VECTOR_TABLE: [usize; 88] = [0; 88];
+#[unsafe(no_mangle)]
+fn _int_handler() {
+    loop {}
+}
 
 #[unsafe(no_mangle)]
 fn _start() {
+    let _user_bank_io = unsafe { slice::from_raw_parts_mut(0x4002_8000 as *mut u32, 0xc8) };
+    let sio_gpio_out_set = 0xd0000018 as *mut u32;
     let cpuid = unsafe { &*(0xd000_0000 as *const u32) };
     let cpuid = unsafe { core::ptr::read_volatile(cpuid) };
     if cpuid == 0 {
-        let mut a = 0;
-        loop {
-            a += 1;
-            core::hint::black_box(&a);
-        }
-    } else {
-        loop {}
+        unsafe { sio_gpio_out_set.write_volatile(1 << 25) };
     }
+    loop {}
 }
 
 #[panic_handler]
